@@ -1,0 +1,46 @@
+
+@baseUrl = https://api.github.com
+
+@accessToken= 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
+@acceptHeader= application/vnd.github.v3.html+json
+
+
+
+GET {{baseUrl}}/user/starred
+    ?page=2
+Authorization: token {{accessToken}}
+Accept: {{acceptHeader}}
+# If-None-Match: W/"99889322a11cb1b269292124be99e0dd9984f7f948ee437a2392fdd96f1176b7"
+
+###
+
+GET {{baseUrl}}/search/repositories
+    ?q=flutter
+    &page=1
+Authorization: token {{accessToken}}
+Accept: {{acceptHeader}}
+
+###
+GET {{baseUrl}}/repos/flutter/flutter/readme
+Authorization: token {{accessToken}}
+Accept: {{acceptHeader}}
+
+###
+PUT {{baseUrl}}/user/starred/ashu0806/Sorting_Techniques
+Authorization: token {{accessToken}}
+Content-Length: 0
+Accept: {{acceptHeader}}
+
+###
+DELETE {{baseUrl}}/user/starred/ashu0806/Sorting_Techniques
+Authorization: token {{accessToken}}
+Accept: {{acceptHeader}}
+
+
+###
+GET {{baseUrl}}/user/starred/ashu0806/Sorting_Techniques
+Authorization: token {{accessToken}}
+Accept: {{acceptHeader}}
+
+
+
