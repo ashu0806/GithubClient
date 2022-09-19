@@ -67,144 +67,147 @@ class _SearchBarState extends ConsumerState<SearchBar> {
       _searchBarController.close();
     }
 
-    return FloatingSearchBar(
-      controller: _searchBarController,
-      body: FloatingSearchBarScrollNotifier(
-        child: widget.body,
-      ),
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            widget.title,
-            style: Theme.of(context).textTheme.headline4!.copyWith(
-                  fontSize: 18.sp,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          SizedBox(
-            height: 5.h,
-          ),
-          Text(
-            'Tap to search 👍',
-            style: Theme.of(context).textTheme.caption,
-          ),
-        ],
-      ),
-      hint: widget.hintText,
-      actions: [
-        FloatingSearchBarAction.searchToClear(
-          showIfClosed: false,
+    return SafeArea(
+      child: FloatingSearchBar(
+        controller: _searchBarController,
+        body: FloatingSearchBarScrollNotifier(
+          child: widget.body,
         ),
-        FloatingSearchBarAction(
-          child: IconButton(
-            splashRadius: 18.r,
-            onPressed: () {
-              widget.onSignOutButtonPressed();
-            },
-            icon: const Icon(
-              MdiIcons.logoutVariant,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              widget.title,
+              style: Theme.of(context).textTheme.headline4!.copyWith(
+                    fontSize: 18.sp,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
-          ),
+            SizedBox(
+              height: 5.h,
+            ),
+            Text(
+              'Tap to search 👍',
+              style: Theme.of(context).textTheme.caption,
+            ),
+          ],
         ),
-      ],
-      onQueryChanged: (query) {
-        ref
-            .read(searchHistoryRepositoryNotifierProvider.notifier)
-            .watchSearchTerms(
-              filter: query,
-            );
-      },
-      onSubmitted: (query) {
-        pushPageAndAddToHistory(query);
-      },
-      builder: (context, transition) {
-        final searchHistoryState =
-            ref.watch(searchHistoryRepositoryNotifierProvider);
-        return Material(
-          color: Theme.of(context).cardColor,
-          elevation: 5.r,
-          borderRadius: BorderRadius.circular(
-            8.r,
+        hint: widget.hintText,
+        actions: [
+          FloatingSearchBarAction.searchToClear(
+            showIfClosed: false,
           ),
-          clipBehavior: Clip.hardEdge,
-          child: searchHistoryState.map(
-            data: (history) {
-              if (_searchBarController.query.isEmpty && history.value.isEmpty) {
-                return Container(
-                  height: 50.h,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: Text(
-                    'Start searching your queries',
-                    style: Theme.of(context).textTheme.headline4!.copyWith(
-                          fontSize: 13.sp,
-                          color: Colors.grey,
-                        ),
-                  ),
-                );
-              } else if (history.value.isEmpty) {
-                return ListTile(
-                  leading: const Icon(
-                    Icons.search,
-                  ),
-                  title: Text(
-                    _searchBarController.query,
-                  ),
-                  onTap: () {
-                    pushPageAndAddToHistory(_searchBarController.query);
-                  },
-                );
-              }
-              return Column(
-                children: history.value
-                    .map(
-                      (term) => ListTile(
-                        leading: const Icon(
-                          Icons.history,
-                        ),
-                        title: Text(
-                          term,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        onTap: () {
-                          pushPageAndPutSearchTermFirst(term);
-                        },
-                        trailing: IconButton(
-                          splashRadius: 20.r,
-                          onPressed: () {
-                            ref
-                                .read(
-                                  searchHistoryRepositoryNotifierProvider
-                                      .notifier,
-                                )
-                                .deleteSerachTerm(term);
-                          },
-                          icon: const Icon(
-                            Icons.clear,
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              );
-            },
-            error: (_) => ListTile(
-              title: Text(
-                'Unexpected Error occurred ${_.error}',
+          FloatingSearchBarAction(
+            child: IconButton(
+              splashRadius: 18.r,
+              onPressed: () {
+                widget.onSignOutButtonPressed();
+              },
+              icon: const Icon(
+                MdiIcons.logoutVariant,
               ),
             ),
-            loading: (_) => const ListTile(
-              title: LinearProgressIndicator(),
-            ),
           ),
-        );
-      },
+        ],
+        onQueryChanged: (query) {
+          ref
+              .read(searchHistoryRepositoryNotifierProvider.notifier)
+              .watchSearchTerms(
+                filter: query,
+              );
+        },
+        onSubmitted: (query) {
+          pushPageAndAddToHistory(query);
+        },
+        builder: (context, transition) {
+          final searchHistoryState =
+              ref.watch(searchHistoryRepositoryNotifierProvider);
+          return Material(
+            color: Theme.of(context).cardColor,
+            elevation: 5.r,
+            borderRadius: BorderRadius.circular(
+              8.r,
+            ),
+            clipBehavior: Clip.hardEdge,
+            child: searchHistoryState.map(
+              data: (history) {
+                if (_searchBarController.query.isEmpty &&
+                    history.value.isEmpty) {
+                  return Container(
+                    height: 50.h,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Text(
+                      'Start searching your queries',
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                            fontSize: 13.sp,
+                            color: Colors.grey,
+                          ),
+                    ),
+                  );
+                } else if (history.value.isEmpty) {
+                  return ListTile(
+                    leading: const Icon(
+                      Icons.search,
+                    ),
+                    title: Text(
+                      _searchBarController.query,
+                    ),
+                    onTap: () {
+                      pushPageAndAddToHistory(_searchBarController.query);
+                    },
+                  );
+                }
+                return Column(
+                  children: history.value
+                      .map(
+                        (term) => ListTile(
+                          leading: const Icon(
+                            Icons.history,
+                          ),
+                          title: Text(
+                            term,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          onTap: () {
+                            pushPageAndPutSearchTermFirst(term);
+                          },
+                          trailing: IconButton(
+                            splashRadius: 20.r,
+                            onPressed: () {
+                              ref
+                                  .read(
+                                    searchHistoryRepositoryNotifierProvider
+                                        .notifier,
+                                  )
+                                  .deleteSerachTerm(term);
+                            },
+                            icon: const Icon(
+                              Icons.clear,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                );
+              },
+              error: (_) => ListTile(
+                title: Text(
+                  'Unexpected Error occurred ${_.error}',
+                ),
+              ),
+              loading: (_) => const ListTile(
+                title: LinearProgressIndicator(),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

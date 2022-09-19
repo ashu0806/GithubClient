@@ -29,7 +29,7 @@ class SignInPage extends HookConsumerWidget {
                   // ),
                   Container(
                     height: 110.h,
-                    width: 130.w,
+                    width: 160.w,
                     alignment: Alignment.center,
                     decoration: const BoxDecoration(
                       image: DecorationImage(

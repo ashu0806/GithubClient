@@ -109,7 +109,7 @@ class GithubAuthenticator {
             (value) => value?.accessToken,
           );
       final userNameandPassword =
-          stringTobase64.encode('$clientId : $clientSecret');
+          stringTobase64.encode('$clientId:$clientSecret');
       try {
         await _dio.deleteUri(
           revocationEndPoint,
