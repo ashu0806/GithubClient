@@ -29,6 +29,8 @@ dependencies:
   cached_network_image: ^3.2.1
   shimmer: ^2.0.0
   material_floating_search_bar: ^0.3.7
+  rename: ^2.0.1
+  flutter_launcher_icons: ^0.10.0
 
 dev_dependencies:
   auto_route_generator: ^4.0.0
@@ -39,7 +41,11 @@ dev_dependencies:
   json_serializable: ^6.2.0
   lint: ^1.8.2
  
-
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/github_icon.png"
+  min_sdk_android: 21
 
 flutter:
 
@@ -47,7 +53,7 @@ flutter:
 
   assets:
     - assets/images/
-    - assets/icons/
+    # - assets/icons/
   #   - images/a_dot_ham.jpeg
 
   # fonts:
